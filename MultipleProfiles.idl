@@ -1,0 +1,19 @@
+enum Resolution {LOW, HIGH};
+
+union HumidityUnion 
+	switch (Resolution){
+		case LOW:
+			short shortHumidity;
+		case HIGH:
+			float floatHumidity;
+		
+};
+
+struct PercisionCommand{
+	Resolution requestedResolution;
+};
+
+struct ResolutionCommand{
+	HumidityUnion humidity;
+};
+
