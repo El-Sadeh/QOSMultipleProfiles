@@ -66,8 +66,8 @@ void publisher_main(int domain_id, int sample_count)
 	dds::topic::Topic<PercisionCommand> percisionTopic(participant, "Example PercisionCommand");
 
 	auto eladQosProvider = dds::core::QosProvider
-	("C:\\Users\\elelb\\Desktop\\tempWork\\QOSMultipleProfiles\\mySystemProfiles.xml");
-
+	("mySystemProfiles.xml");
+	//GS - needs to be a relative path so it will work on different PCs
 
 	//Create a  'PercisionCommand' variable and a pointer to that variable.
 	//The purpose: to enable access from the listener. 

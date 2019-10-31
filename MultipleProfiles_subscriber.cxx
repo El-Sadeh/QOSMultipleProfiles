@@ -51,7 +51,7 @@ void subscriber_main(int domain_id, int sample_count)
 
 	//Set the Qos to be read from the following path
 	auto eladQosProvider = dds::core::QosProvider
-	("C:\\Users\\elelb\\Desktop\\tempWork\\QOSMultipleProfiles\\mySystemProfiles.xml");
+	("mySystemProfiles.xml");
 
 
 	// Create a DataReader with default Qos (Subscriber created in-line)
