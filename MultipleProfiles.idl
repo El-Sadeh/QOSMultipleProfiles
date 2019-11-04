@@ -14,6 +14,7 @@ struct PercisionCommand{
 };
 
 struct ResolutionCommand{
+	short SensorID; 	//@key
 	HumidityUnion humidity;
 };
 

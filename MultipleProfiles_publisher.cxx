@@ -65,8 +65,7 @@ void publisher_main(int domain_id, int sample_count)
 // Create a Topic -- and automatically register the type
 	dds::topic::Topic<PercisionCommand> percisionTopic(participant, "Example PercisionCommand");
 
-	auto eladQosProvider = dds::core::QosProvider
-	("mySystemProfiles.xml");
+	auto eladQosProvider = dds::core::QosProvider("mySystemProfiles.xml");
 	//GS - needs to be a relative path so it will work on different PCs
 
 	//Create a  'PercisionCommand' variable and a pointer to that variable.
@@ -97,7 +96,10 @@ void publisher_main(int domain_id, int sample_count)
 
 	
 	short intRandomHumidity;
-    ResolutionCommand sample;
+    ResolutionCommand sample1;
+	ResolutionCommand sample2;
+	sample1.SensorID(1);
+	sample2.SensorID(2);
 
 	//creating a random generator
 	std::default_random_engine generator;
@@ -112,19 +114,21 @@ void publisher_main(int domain_id, int sample_count)
 		{
 			//Generate a float number in the range [0.00,100.00]
 			intRandomHumidity = (short)distributionForFloat(generator);
-			sample.humidity().floatHumidity(((float)intRandomHumidity) / 100);
+			sample1.humidity().floatHumidity(((float)intRandomHumidity) / 100);
 
 		}
 		else  //When the requested resolution is LOW:
 		{
 			//Generate a short int number in the range [0,100]
-			sample.humidity().shortHumidity(((short)distributionForInt(generator)));
+			sample1.humidity().shortHumidity(((short)distributionForInt(generator)));
+			sample2.humidity().shortHumidity(((short)distributionForInt(generator)));
 		}
 		
 		std::cout << "Writing ResolutionCommand, count " << count << std::endl;
-		writer.write(sample);
+		writer.write(sample1);
+		writer.write(sample2);
 
-        rti::util::sleep(dds::core::Duration(1));
+        rti::util::sleep(dds::core::Duration(5));
     }
 }
 

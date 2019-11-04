@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef MultipleProfilesPlugin_1327645732_h
-#define MultipleProfilesPlugin_1327645732_h
+#ifndef MultipleProfilesPlugin_1327645758_h
+#define MultipleProfilesPlugin_1327645758_h
 
 #include "MultipleProfiles.hpp"
 
@@ -609,9 +609,28 @@ PercisionCommandPlugin_new(void);
 NDDSUSERDllExport extern void
 PercisionCommandPlugin_delete(struct PRESTypePlugin *);
 
+/* The type used to store keys for instances of type struct
+* AnotherSimple.
+*
+* By default, this type is struct ResolutionCommand
+* itself. However, if for some reason this choice is not practical for your
+* system (e.g. if sizeof(struct ResolutionCommand)
+* is very large), you may redefine this typedef in terms of another type of
+* your choosing. HOWEVER, if you define the KeyHolder type to be something
+* other than struct AnotherSimple, the
+* following restriction applies: the key of struct
+* ResolutionCommand must consist of a
+* single field of your redefined KeyHolder type and that field must be the
+* first field in struct ResolutionCommand.
+*/
+typedef  class ResolutionCommand ResolutionCommandKeyHolder;
+
 #define ResolutionCommandPlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
 #define ResolutionCommandPlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
 #define ResolutionCommandPlugin_return_buffer PRESTypePluginDefaultEndpointData_returnBuffer 
+
+#define ResolutionCommandPlugin_get_key PRESTypePluginDefaultEndpointData_getKey 
+#define ResolutionCommandPlugin_return_key PRESTypePluginDefaultEndpointData_returnKey
 
 #define ResolutionCommandPlugin_create_sample PRESTypePluginDefaultEndpointData_createSample 
 #define ResolutionCommandPlugin_destroy_sample PRESTypePluginDefaultEndpointData_deleteSample 
@@ -653,6 +672,20 @@ ResolutionCommandPluginSupport_print_data(
     const ResolutionCommand *sample,
     const char *desc,
     unsigned int indent);
+
+NDDSUSERDllExport extern ResolutionCommand*
+ResolutionCommandPluginSupport_create_key_ex(RTIBool allocate_pointers);
+
+NDDSUSERDllExport extern ResolutionCommand*
+ResolutionCommandPluginSupport_create_key(void);
+
+NDDSUSERDllExport extern void 
+ResolutionCommandPluginSupport_destroy_key_ex(
+    ResolutionCommandKeyHolder *key,RTIBool deallocate_pointers);
+
+NDDSUSERDllExport extern void 
+ResolutionCommandPluginSupport_destroy_key(
+    ResolutionCommandKeyHolder *key);
 
 /* ----------------------------------------------------------------------------
 Callback functions:
@@ -835,6 +868,32 @@ ResolutionCommandPlugin_serialized_sample_to_key(
     RTIBool deserialize_key, 
     void *endpoint_plugin_qos);
 
+NDDSUSERDllExport extern RTIBool 
+ResolutionCommandPlugin_instance_to_key(
+    PRESTypePluginEndpointData endpoint_data,
+    ResolutionCommandKeyHolder *key, 
+    const ResolutionCommand *instance);
+
+NDDSUSERDllExport extern RTIBool 
+ResolutionCommandPlugin_key_to_instance(
+    PRESTypePluginEndpointData endpoint_data,
+    ResolutionCommand *instance, 
+    const ResolutionCommandKeyHolder *key);
+
+NDDSUSERDllExport extern RTIBool 
+ResolutionCommandPlugin_instance_to_keyhash(
+    PRESTypePluginEndpointData endpoint_data,
+    DDS_KeyHash_t *keyhash,
+    const ResolutionCommand *instance);
+
+NDDSUSERDllExport extern RTIBool 
+ResolutionCommandPlugin_serialized_sample_to_keyhash(
+    PRESTypePluginEndpointData endpoint_data,
+    struct RTICdrStream *stream, 
+    DDS_KeyHash_t *keyhash,
+    RTIBool deserialize_encapsulation,
+    void *endpoint_plugin_qos); 
+
 /* Plugin Functions */
 NDDSUSERDllExport extern struct PRESTypePlugin*
 ResolutionCommandPlugin_new(void);
@@ -849,5 +908,5 @@ ResolutionCommandPlugin_delete(struct PRESTypePlugin *);
 #define NDDSUSERDllExport
 #endif
 
-#endif /* MultipleProfilesPlugin_1327645732_h */
+#endif /* MultipleProfilesPlugin_1327645758_h */
 

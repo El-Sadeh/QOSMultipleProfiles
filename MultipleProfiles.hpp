@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef MultipleProfiles_1327645732_hpp
-#define MultipleProfiles_1327645732_hpp
+#ifndef MultipleProfiles_1327645758_hpp
+#define MultipleProfiles_1327645758_hpp
 
 #include <iosfwd>
 
@@ -171,7 +171,8 @@ class NDDSUSERDllExport ResolutionCommand {
   public:
     ResolutionCommand();
 
-    explicit ResolutionCommand(
+    ResolutionCommand(
+        int16_t SensorID,
         const HumidityUnion& humidity);
 
     #ifdef RTI_CXX11_RVALUE_REFERENCES
@@ -186,6 +187,10 @@ class NDDSUSERDllExport ResolutionCommand {
     #endif
     #endif 
 
+    int16_t& SensorID() OMG_NOEXCEPT; 
+    const int16_t& SensorID() const OMG_NOEXCEPT;
+    void SensorID(int16_t value);
+
     HumidityUnion& humidity() OMG_NOEXCEPT; 
     const HumidityUnion& humidity() const OMG_NOEXCEPT;
     void humidity(const HumidityUnion& value);
@@ -197,6 +202,7 @@ class NDDSUSERDllExport ResolutionCommand {
 
   private:
 
+    int16_t m_SensorID_;
     HumidityUnion m_humidity_;
 
 };
@@ -376,5 +382,5 @@ namespace rti {
 #define NDDSUSERDllExport
 #endif
 
-#endif // MultipleProfiles_1327645732_hpp
+#endif // MultipleProfiles_1327645758_hpp
 

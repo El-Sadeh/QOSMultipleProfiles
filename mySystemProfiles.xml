@@ -86,15 +86,15 @@ RTI Connext user manual.
         <qos_profile name="MultipleProfiles_Profile" base_name="BuiltinQosLibExp::Generic.StrictReliable" is_default_qos="true">
             <!-- QoS used to configure the data writer created in the example code -->                
             <datawriter_qos>
-              <durability>
-                <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
-              </durability>
               <reliability>
-                <kind>RELIABLE_RELIABILITY_QOS</kind>
+                <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
               </reliability>
+              <durability>
+                <kind>VOLATILE_DURABILITY_QOS</kind>
+              </durability>
               <history>
                 <kind>KEEP_LAST_HISTORY_QOS</kind>
-                <!-- No need to put deapth because all we need is 1 -->
+                <depth>30</depth>
               </history>
                 <publication_name>
                     <name>MultipleProfilesDataWriter</name>
@@ -104,15 +104,16 @@ RTI Connext user manual.
             <!-- QoS used to configure the data reader created in the example code -->                
             <datareader_qos>
               <reliability>
-                <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+                <kind>RELIABLE_RELIABILITY_QOS</kind>
               </reliability>
               <durability>
                 <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
               </durability>
               <history>
                 <kind>KEEP_LAST_HISTORY_QOS</kind>
-                <!-- No need to put deapth because all we need is 1 -->
+                <depth>30</depth>
               </history>
+
                 <subscription_name>
                     <name>MultipleProfilesDataReader</name>
                 </subscription_name>

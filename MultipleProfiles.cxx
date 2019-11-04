@@ -277,18 +277,23 @@ std::ostream& operator << (std::ostream& o,const PercisionCommand& sample)
 
 // ---- ResolutionCommand: 
 
-ResolutionCommand::ResolutionCommand()  {
+ResolutionCommand::ResolutionCommand() :
+    m_SensorID_ (0)  {
 }   
 
 ResolutionCommand::ResolutionCommand (
+    int16_t SensorID,
     const HumidityUnion& humidity)
     :
+        m_SensorID_( SensorID ),
         m_humidity_( humidity ) {
 }
 
 #ifdef RTI_CXX11_RVALUE_REFERENCES
 #ifdef RTI_CXX11_NO_IMPLICIT_MOVE_OPERATIONS
-ResolutionCommand::ResolutionCommand(ResolutionCommand&& other_) OMG_NOEXCEPT  :m_humidity_ (std::move(other_.m_humidity_))
+ResolutionCommand::ResolutionCommand(ResolutionCommand&& other_) OMG_NOEXCEPT  :m_SensorID_ (std::move(other_.m_SensorID_))
+,
+m_humidity_ (std::move(other_.m_humidity_))
 {
 } 
 
@@ -303,10 +308,14 @@ ResolutionCommand& ResolutionCommand::operator=(ResolutionCommand&&  other_) OMG
 void ResolutionCommand::swap(ResolutionCommand& other_)  OMG_NOEXCEPT 
 {
     using std::swap;
+    swap(m_SensorID_, other_.m_SensorID_);
     swap(m_humidity_, other_.m_humidity_);
 }  
 
 bool ResolutionCommand::operator == (const ResolutionCommand& other_) const {
+    if (m_SensorID_ != other_.m_SensorID_) {
+        return false;
+    }
     if (m_humidity_ != other_.m_humidity_) {
         return false;
     }
@@ -317,6 +326,18 @@ bool ResolutionCommand::operator != (const ResolutionCommand& other_) const {
 }
 
 // --- Getters and Setters: -------------------------------------------------
+int16_t& ResolutionCommand::SensorID() OMG_NOEXCEPT {
+    return m_SensorID_;
+}
+
+const int16_t& ResolutionCommand::SensorID() const OMG_NOEXCEPT {
+    return m_SensorID_;
+}
+
+void ResolutionCommand::SensorID(int16_t value) {
+    m_SensorID_ = value;
+}
+
 HumidityUnion& ResolutionCommand::humidity() OMG_NOEXCEPT {
     return m_humidity_;
 }
@@ -333,6 +354,7 @@ std::ostream& operator << (std::ostream& o,const ResolutionCommand& sample)
 {
     rti::util::StreamFlagSaver flag_saver (o);
     o <<"[";
+    o << "SensorID: " << sample.SensorID()<<", ";
     o << "humidity: " << sample.humidity() ;
     o <<"]";
     return o;
@@ -574,13 +596,30 @@ namespace rti {
             {
                 static RTIBool is_initialized = RTI_FALSE;
 
-                static DDS_TypeCode_Member ResolutionCommand_g_tc_members[1]=
+                static DDS_TypeCode_Member ResolutionCommand_g_tc_members[2]=
                 {
 
                     {
-                        (char *)"humidity",/* Member name */
+                        (char *)"SensorID",/* Member name */
                         {
                             0,/* Representation ID */          
+                            DDS_BOOLEAN_FALSE,/* Is a pointer? */
+                            -1, /* Bitfield bits */
+                            NULL/* Member type code is assigned later */
+                        },
+                        0, /* Ignored */
+                        0, /* Ignored */
+                        0, /* Ignored */
+                        NULL, /* Ignored */
+                        RTI_CDR_KEY_MEMBER , /* Is a key? */
+                        DDS_PUBLIC_MEMBER,/* Member visibility */
+                        1,
+                        NULL/* Ignored */
+                    }, 
+                    {
+                        (char *)"humidity",/* Member name */
+                        {
+                            1,/* Representation ID */          
                             DDS_BOOLEAN_FALSE,/* Is a pointer? */
                             -1, /* Bitfield bits */
                             NULL/* Member type code is assigned later */
@@ -606,7 +645,7 @@ namespace rti {
                         0, /* Ignored */
                         0, /* Ignored */
                         NULL, /* Ignored */
-                        1, /* Number of members */
+                        2, /* Number of members */
                         ResolutionCommand_g_tc_members, /* Members */
                         DDS_VM_NONE  /* Ignored */         
                     }}; /* Type code for ResolutionCommand*/
@@ -615,7 +654,9 @@ namespace rti {
                     return &ResolutionCommand_g_tc;
                 }
 
-                ResolutionCommand_g_tc_members[0]._representation._typeCode = (RTICdrTypeCode *)&rti::topic::dynamic_type< HumidityUnion>::get().native();
+                ResolutionCommand_g_tc_members[0]._representation._typeCode = (RTICdrTypeCode *)&DDS_g_tc_short;
+
+                ResolutionCommand_g_tc_members[1]._representation._typeCode = (RTICdrTypeCode *)&rti::topic::dynamic_type< HumidityUnion>::get().native();
 
                 is_initialized = RTI_TRUE;
 
@@ -813,6 +854,7 @@ namespace dds {
 
         void topic_type_support<ResolutionCommand>::reset_sample(ResolutionCommand& sample) 
         {
+            rti::topic::reset_sample(sample.SensorID());
             rti::topic::reset_sample(sample.humidity());
         }
 

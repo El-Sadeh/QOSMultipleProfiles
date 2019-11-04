@@ -1,0 +1,2 @@
+objs\x64Win64VS2017\MultipleProfiles_publisher.exe
+pause
