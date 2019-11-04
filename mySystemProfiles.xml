@@ -87,10 +87,10 @@ RTI Connext user manual.
             <!-- QoS used to configure the data writer created in the example code -->                
             <datawriter_qos>
               <reliability>
-                <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+                <kind>RELIABLE_RELIABILITY_QOS</kind>
               </reliability>
               <durability>
-                <kind>VOLATILE_DURABILITY_QOS</kind>
+                <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
               </durability>
               <history>
                 <kind>KEEP_LAST_HISTORY_QOS</kind>

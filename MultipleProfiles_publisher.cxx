@@ -128,7 +128,7 @@ void publisher_main(int domain_id, int sample_count)
 		writer.write(sample1);
 		writer.write(sample2);
 
-        rti::util::sleep(dds::core::Duration(5));
+        rti::util::sleep(dds::core::Duration(1));
     }
 }
 
