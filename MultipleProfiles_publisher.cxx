@@ -80,7 +80,7 @@ void publisher_main(int domain_id, int sample_count)
 	dds::sub::DataReader<PercisionCommand> reader(
 		dds::sub::Subscriber(participant),
 		percisionTopic,
-		dds::core::QosProvider::Default().datareader_qos(),
+		eladQosProvider.datareader_qos("MultipleProfiles_Library::MultipleProfiles_Profile"),
 		&listener,
 		dds::core::status::StatusMask::data_available());
 	//********************* End of data reader setup block **************************
@@ -92,7 +92,7 @@ void publisher_main(int domain_id, int sample_count)
     dds::topic::Topic<ResolutionCommand> humidityTopic (participant, "Example ResolutionCommand");
 
     // Create a DataWriter with default Qos (Publisher created in-line)
-    dds::pub::DataWriter<ResolutionCommand> writer(dds::pub::Publisher(participant), humidityTopic);
+	dds::pub::DataWriter<ResolutionCommand> writer(dds::pub::Publisher(participant), humidityTopic, ; eladQosProvider.datawriter_qos);
 
 	
 	short intRandomHumidity;
