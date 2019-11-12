@@ -80,7 +80,7 @@ void publisher_main(int domain_id, int sample_count)
 	dds::sub::DataReader<PercisionCommand> reader(
 		dds::sub::Subscriber(participant),
 		percisionTopic,
-		eladQosProvider.datareader_qos("MultipleProfiles_Library::MultipleProfiles_Profile"),
+		eladQosProvider.datareader_qos("MultipleProfiles_Library::Strict_Reliable_qos_Profile"),
 		&listener,
 		dds::core::status::StatusMask::data_available());
 	//********************* End of data reader setup block **************************
@@ -91,15 +91,18 @@ void publisher_main(int domain_id, int sample_count)
     // Create a Topic -- and automatically register the type
     dds::topic::Topic<ResolutionCommand> humidityTopic (participant, "Example ResolutionCommand");
 
-    // Create a DataWriter with default Qos (Publisher created in-line)
-	dds::pub::DataWriter<ResolutionCommand> writer(dds::pub::Publisher(participant), humidityTopic, ; eladQosProvider.datawriter_qos);
+    // Create a DataWriter with eladqosprovider Qos (Publisher created in-line)
+	dds::pub::DataWriter<ResolutionCommand> writer(
+		dds::pub::Publisher(participant),
+		humidityTopic,
+		eladQosProvider.datawriter_qos("MultipleProfiles_Library::Best_Effort_qos_Profile"));
 
 	
 	short intRandomHumidity;
     ResolutionCommand sample1;
-	ResolutionCommand sample2;
+	//ResolutionCommand sample2;
 	sample1.SensorID(1);
-	sample2.SensorID(2);
+	//sample2.SensorID(2);
 
 	//creating a random generator
 	std::default_random_engine generator;
@@ -121,12 +124,12 @@ void publisher_main(int domain_id, int sample_count)
 		{
 			//Generate a short int number in the range [0,100]
 			sample1.humidity().shortHumidity(((short)distributionForInt(generator)));
-			sample2.humidity().shortHumidity(((short)distributionForInt(generator)));
+			//sample2.humidity().shortHumidity(((short)distributionForInt(generator)));
 		}
 		
 		std::cout << "Writing ResolutionCommand, count " << count << std::endl;
 		writer.write(sample1);
-		writer.write(sample2);
+		//writer.write(sample2);
 
         rti::util::sleep(dds::core::Duration(1));
     }

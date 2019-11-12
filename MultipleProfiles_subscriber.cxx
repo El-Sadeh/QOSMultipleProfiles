@@ -59,7 +59,7 @@ void subscriber_main(int domain_id, int sample_count)
 	dds::sub::DataReader<ResolutionCommand> reader(
 		dds::sub::Subscriber(participant),
 		topic,
-		dds::core::QosProvider::Default().datareader_qos(),
+		eladQosProvider.datareader_qos("MultipleProfiles_Library::Best_Effort_qos_Profile"),
 		&listener,
 		dds::core::status::StatusMask::data_available());
 	//************************************ End of data reader setup block ***********************************
@@ -69,7 +69,10 @@ void subscriber_main(int domain_id, int sample_count)
 	dds::topic::Topic<PercisionCommand> percisionTopic(participant, "Example PercisionCommand");
 
 	// Create a DataWriter with default Qos (Publisher created in-line)
-	dds::pub::DataWriter<PercisionCommand> writer(dds::pub::Publisher(participant), percisionTopic);
+	dds::pub::DataWriter<PercisionCommand> writer(
+		dds::pub::Publisher(participant),
+		percisionTopic,
+		eladQosProvider.datawriter_qos("MultipleProfiles_Library::Strict_Reliable_qos_Profile"));
 	
 
 	//**********************************  End of data writer setup block  ***********************************

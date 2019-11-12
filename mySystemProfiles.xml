@@ -83,7 +83,7 @@ RTI Connext user manual.
 
              A QoS profile groups a set of related QoS.
         -->
-        <qos_profile name="MultipleProfiles_Profile" base_name="BuiltinQosLibExp::Generic.StrictReliable" is_default_qos="true">
+        <qos_profile name="Strict_Reliable_qos_Profile">
             <!-- QoS used to configure the data writer created in the example code -->                
             <datawriter_qos>
               <reliability>
@@ -94,7 +94,7 @@ RTI Connext user manual.
               </durability>
               <history>
                 <kind>KEEP_LAST_HISTORY_QOS</kind>
-                <depth>30</depth>
+                <depth>1</depth>
               </history>
                 <publication_name>
                     <name>MultipleProfilesDataWriter</name>
@@ -111,7 +111,7 @@ RTI Connext user manual.
               </durability>
               <history>
                 <kind>KEEP_LAST_HISTORY_QOS</kind>
-                <depth>30</depth>
+                <depth>1</depth>
               </history>
 
                 <subscription_name>
@@ -131,6 +131,27 @@ RTI Connext user manual.
 
             </participant_qos>
         </qos_profile>
+      
+        <qos_profile name="Best_Effort_qos_Profile">
+          <datawriter_qos >
+            <reliability>
+              <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+            </reliability>
+            <durability>
+              <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+            </durability>
+          </datawriter_qos>
 
+          <datareader_qos>
+            <reliability>
+              <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+            </reliability>
+            <durability>
+              <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+            </durability>
+          </datareader_qos>
+        </qos_profile>
     </qos_library>
+  
+    
 </dds>
